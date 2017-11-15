@@ -1,0 +1,2 @@
+# monadfun
+experimenting with monads
