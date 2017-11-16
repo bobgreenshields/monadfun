@@ -1,6 +1,7 @@
 class Status
 	def initialize
 		@success = true
+		@events = []
 	end
 
 	def success?

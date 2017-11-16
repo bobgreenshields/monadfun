@@ -1,20 +1,20 @@
 require "status"
 
 describe Status do
+	subject(:status) { Status.new }
+
 	describe "#success?" do
+		subject { status.success? }
+
 		context "when first created" do
-			it "should be true" do
-				status = Status.new
-				expect(status.success?).to be_truthy
-			end
+			it { is_expected.to be_truthy }	
 		end
 
 		context "when fail has been called" do
-			it "should be false" do
-				status = Status.new
+			before :each do
 				status.fail
-				expect(status.success?).to be_falsey
 			end
+			it { is_expected.to be_falsey }	
 		end
 	end
 end
