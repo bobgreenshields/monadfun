@@ -16,4 +16,9 @@ class Status
 		@events << event
 	end
 
+	def each
+		return enum_for(:each) unless block_given?
+		@events.each { | event | yield event }
+	end
+
 end
