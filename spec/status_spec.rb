@@ -10,10 +10,11 @@ describe Status do
 			it { is_expected.to be_truthy }	
 		end
 
-		context "when fail has been called" do
+		context "when one of its events has failed" do
 			before :each do
-				status.fail
+				status << Struct.new(:failure?).new(true)
 			end
+
 			it { is_expected.to be_falsey }	
 		end
 	end

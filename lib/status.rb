@@ -4,11 +4,16 @@ class Status
 		@events = []
 	end
 
-	def success?
-		@success
+	def failure?
+		@events.any? { |event| event.failure? }
 	end
 
-	def fail
-		@success = false	
+	def success?
+		! failure?
 	end
+
+	def << (event)
+		@events << event
+	end
+
 end
