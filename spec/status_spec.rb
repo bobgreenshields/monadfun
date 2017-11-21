@@ -18,4 +18,17 @@ describe Status do
 			it { is_expected.to be_falsey }	
 		end
 	end
+
+	describe "#<<" do
+		context "when events have been <<" do
+			before :each do
+				status << 1 << 2
+			end
+
+			it "they should be added to the array and yielded to #each" do
+				expect { |b| status.each(&b) }.to yield_successive_args(1, 2)
+				
+			end
+		end
+	end
 end
