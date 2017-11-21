@@ -1,6 +1,7 @@
+require_relative "default_formatter"
+
 class Status
-	def initialize
-#	def initialize(formatter: DefaultFormatter.new)
+	def initialize(formatter: DefaultFormatter.new)
 		@events = []
 	end
 
