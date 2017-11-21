@@ -5,7 +5,6 @@ class DefaultFormatter
 		else
 			status_str = "This process has failed\n"
 		end
-		events_str = events.reverse.map(&:to_s).join("\n")
-		status_str + events_str
+		status_str + events.reverse.map(&:to_s).join("\n")
 	end
 end
