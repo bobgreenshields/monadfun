@@ -1,6 +1,6 @@
 class Status
 	def initialize
-		@success = true
+#	def initialize(formatter: DefaultFormatter.new)
 		@events = []
 	end
 
