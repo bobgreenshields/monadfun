@@ -67,9 +67,11 @@ class MyProcess
 	end
 
 	def call(dir:, executed:)
-		status = MyStatus.new(dir: dir, executed: executed)
-		Right(status).bind(find_dir).bind(do_execute).value
-		
+#		status = MyStatus.new(dir: dir, executed: executed)
+		Right(MyStatus.new(dir: dir, executed: executed)).
+			bind(find_dir).
+			bind(do_execute).
+			value
 	end
 	
 	
