@@ -1,13 +1,10 @@
 require_relative "default_formatter"
 
 class Status
-	def initialize(formatter: DefaultFormatter.new)
-		@events = []
-		@formatter = formatter
-	end
+	attr_accessor :formatter
 
 	def failure?
-		@events.any? { |event| event.failure? }
+		events.any? { |event| event.failure? }
 	end
 
 	def success?
@@ -15,17 +12,27 @@ class Status
 	end
 
 	def <<(event)
-		@events << event
+		events << event
 		self
 	end
 
 	def each
 		return enum_for(:each) unless block_given?
-		@events.each { | event | yield event }
+		events.each { | event | yield event }
 	end
 
 	def to_s
-		@formatter.call(self, @events)
+		formatter.call(self, events)
+	end
+
+	def formatter
+		@formatter ||= DefaultFormatter.new
+	end
+
+	protected
+
+	def events
+		@events ||= []
 	end
 
 end
