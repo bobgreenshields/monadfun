@@ -29,8 +29,6 @@ class Status
 		@formatter ||= DefaultFormatter.new
 	end
 
-	protected
-
 	def events
 		@events ||= []
 	end
