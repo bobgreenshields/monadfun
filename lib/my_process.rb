@@ -16,6 +16,18 @@ class DirNotFound < ProcessFailure
 	end
 end
 
+class ExecuteSuccess < ProcessEvent
+	def build_str(*args)
+		"[SUCCESS]   the execution was successful"
+	end
+end
+
+class ExecuteFailure < ProcessFailure
+	def build_str(*args)
+		"[FAILURE]   the execution failed"
+	end
+end
+
 class MyStatus < Status
 	attr_reader :dir, :executed
 
@@ -32,19 +44,31 @@ class MyProcess
 
 	attr_reader :status
 
-	def initialize(dir:, executed:)
-		@status = MyStatus.new(dir: dir, executed: executed)
-	end
-
-	def call
+	def find_dir
 		dir_path = "/home/bobg/test/dir"
-		Right(@status).bind do | status |
+
+		->(status) do
 			if status.dir
 				Right(status << DirFound.new(dir_path))
 			else
 				Left(status << DirNotFound.new(dir_path))
 			end
 		end
+	end
+
+	def do_execute
+		->(status) do
+			if status.executed
+				Right(status << ExecuteSuccess.new)
+			else
+				Left(status << ExecuteFailure.new)
+			end
+		end
+	end
+
+	def call(dir:, executed:)
+		status = MyStatus.new(dir: dir, executed: executed)
+		Right(status).bind(find_dir).bind(do_execute).value
 		
 	end
 	

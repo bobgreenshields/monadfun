@@ -5,29 +5,38 @@ M = Dry::Monads
 
 describe MyProcess do
 	let(:args) { {dir: true, executed: false} }
-	subject(:process) { MyProcess.new(**args) }
+	subject(:process) { MyProcess.new }
 	context "when initialized" do
-		it "the status should be properly populated" do
-			expect(process.status.dir).to be_truthy
-			expect(process.status.executed).to be_falsey
-		end
 
 		describe "#call" do
-			subject { process.call }
-			context "when dir" do
-				let(:args) { {dir: true, executed: false} }
+			subject { process.call(**args) }
+			it "returns a Status object" do
+				expect(subject).to be_kind_of(Status)
+			end
 
-				it "should be right" do
-					expect(subject.right?).to be_truthy
+			it "the status should be properly populated" do
+				expect(subject.dir).to be_truthy
+				expect(subject.executed).to be_falsey
+			end
+			context "when dir when execute" do
+				let(:args) { {dir: true, executed: true} }
+
+				it "has success" do
+					expect(subject.success?).to be_truthy
 				end
 
 				it "events should have a DirFound object" do
-					expect(subject.value.events[0]).to be_kind_of(DirFound)
+					expect(subject.events[0]).to be_kind_of(DirFound)
 				end
 
-				it "string to be good" do
-					expect(subject.value.to_s).to eq("")
+				it "events should have a ExecuteSuccess object" do
+					expect(subject.events[1]).to be_kind_of(ExecuteSuccess)
 				end
+
+				it "has to_s" do
+					expect(subject.to_s).to eq("")
+				end
+
 				
 			end
 		end
